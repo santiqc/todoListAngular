@@ -31,4 +31,22 @@ section {
   .example-button-row .mat-mdc-button-base {
     margin: 8px 8px 8px 0;
   }
+
+  table {
+    width: 100%;
+    th{
+      background-color: rgb(204, 204, 255);
+    }
+  }
+
+
+  .alta-class {
+    background-color: #FF7070; 
+  }
   
+  .media-class {
+    background-color: #FFFF99; 
+  }
+  .baja-class {
+    background-color: #99FF99; 
+  }

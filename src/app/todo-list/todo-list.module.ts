@@ -10,6 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [TodoListComponent],
   imports: [
@@ -22,6 +25,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDividerModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatMenuModule
   ],
   providers: [TodoListService]
 })
