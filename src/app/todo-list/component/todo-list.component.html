@@ -3,6 +3,42 @@
     <span class="navbar-brand mb-0 h1">TODO-LIST</span>
   </div>
 </nav>
-<mat-toolbar>
-  <span>My Application</span>
-</mat-toolbar>
+
+<h2 class="mt-5" style="text-align: center">Crear Tarea</h2>
+
+<div class="container">
+  <div class="mb-3">
+    <form class="example-form" [formGroup]="form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre de la Tarea</mat-label>
+        <input matInput placeholder="Ingresar valor" formControlName="nombre" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Descripcion de la Tarea</mat-label>
+        <textarea
+          formControlName="descripcion"
+          matInput
+          placeholder="Ingresar valor"
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Seleccionar prioridad</mat-label>
+        <mat-select formControlName="prioridad">
+          @for (priority of prioritys; track priority) {
+          <mat-option [value]="priority.value" >{{
+            priority.viewValue
+          }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <section>
+      <div class="example-button-row">
+        <button mat-raised-button color="warn" (click)="limpiarCampos()">Limpiar campos</button>
+        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="crearTarea()">Crear</button>
+      </div>
+    </section>
+  </div>
+</div>
