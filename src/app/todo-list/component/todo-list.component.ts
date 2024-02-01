@@ -4,19 +4,9 @@ import { TodoListService } from '../service/todo-list.service';
 import { Tarea } from '../model/Tarea';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-const ELEMENT_DATA: any[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import { AlertService } from '../service/alertService';
+
+
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -38,6 +28,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
 
   constructor(private service: TodoListService,
+    private alertService: AlertService,
     private fb: FormBuilder) {
     this.form = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -64,8 +55,8 @@ export class TodoListComponent implements OnInit, AfterViewInit {
             const priorityOrder = ['ALTA', 'MEDIA', 'BAJA'];
             return priorityOrder.indexOf(a.priority!) - priorityOrder.indexOf(b.priority!);
           });
-
           this.dataSource = new MatTableDataSource<Tarea>(sortedTareas);
+          this.dataSource.paginator = this.paginator
         }
       }
     )
@@ -82,6 +73,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
     this.service.crearTarea(data).subscribe({
       next: (value) => {
+        this.alertService.mensajeExito(value.mensaje);
         console.log(value);
         this.limpiarCampos();
         this.obtenerListaTareas();
@@ -113,8 +105,23 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   eliminarTarea(element: any): void {
-    // Lógica para eliminar la tarea
-    console.log('Eliminar tarea:', element);
+    this.alertService.mensajeConfirmacion('Desea eliminar la tarea?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.service.eliminarTarea(element.id).subscribe(
+            {
+              next: (value) => {
+                this.alertService.mensajeExito(value.mensaje);
+                console.log(value);
+                this.limpiarCampos();
+                this.obtenerListaTareas();
+              },
+            }
+          )
+        }
+      });
+
+
   }
 
 }
