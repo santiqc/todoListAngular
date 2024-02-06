@@ -25,6 +25,9 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['id', 'name', 'description', 'created', 'lastModifiedDate', 'priority', 'action'];
   dataSource: any;
+  dataSourcePorHacer: any;
+  dataSourceTerminas: any;
+
   actualizar: boolean = false;
   tarea!: Tarea | null;
   constructor(private service: TodoListService,
@@ -39,6 +42,8 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSourcePorHacer.paginator = this.paginator;
+    this.dataSourceTerminas.paginator = this.paginator;
   }
 
   ngOnInit(): void {
@@ -49,14 +54,27 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.service.obtenerListaTareas().subscribe(
       {
         next: (value: Tarea[]) => {
-          console.log(value);
           value.forEach((elementAt: Tarea) => elementAt.status == 'CREADA');
           const sortedTareas = value.sort((a, b) => {
             const priorityOrder = ['ALTA', 'MEDIA', 'BAJA'];
             return priorityOrder.indexOf(a.priority!) - priorityOrder.indexOf(b.priority!);
           });
-          this.dataSource = new MatTableDataSource<Tarea>(sortedTareas);
-          this.dataSource.paginator = this.paginator
+
+          this.dataSource = new MatTableDataSource<Tarea>(sortedTareas.filter((elementAt: Tarea) => elementAt.status == 'CREADA'));
+          this.dataSource.paginator = this.paginator;
+
+
+          const tareasPendientes = sortedTareas.filter((elementAt: Tarea) => elementAt.status == 'DISPONIBLE');
+
+          this.dataSourcePorHacer = new MatTableDataSource<Tarea>(tareasPendientes);
+          this.dataSourcePorHacer.paginator = this.paginator;
+          
+
+          const tareasTerminadas = sortedTareas.filter((elementAt: Tarea) => elementAt.status == 'TERMINADA');
+
+          this.dataSourceTerminas = new MatTableDataSource<Tarea>(tareasTerminadas);
+          this.dataSourceTerminas.paginator = this.paginator;
+
         }
       }
     )
@@ -73,7 +91,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
   crearTarea() {
     const formValues = this.form.getRawValue();
-    console.log(this.form);
     const data: Tarea = {
       nameTark: formValues.nombre,
       description: formValues.descripcion,
@@ -83,7 +100,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.service.crearTarea(data).subscribe({
       next: (value) => {
         this.alertService.mensajeExito(value.mensaje);
-        console.log(value);
         this.limpiarCampos();
         this.obtenerListaTareas();
       },
@@ -119,7 +135,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   actualizarTarea(element: Tarea): void {
-    // Lógica para actualizar la tarea
     const formValues = this.form.getRawValue();
     const data: Tarea = {
       id: element.id,
@@ -131,7 +146,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.service.actualizarTarea(data).subscribe({
       next: (value) => {
         this.alertService.mensajeExito(value.mensaje);
-        console.log(value);
         this.limpiarCampos();
         this.obtenerListaTareas();
       },
@@ -146,7 +160,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
             {
               next: (value) => {
                 this.alertService.mensajeExito(value.mensaje);
-                console.log(value);
                 this.limpiarCampos();
                 this.obtenerListaTareas();
               },
@@ -159,7 +172,24 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   ponerEnCurso(element: Tarea) {
-
+    const status = 'DISPONIBLE';
+    this.service.cambiarStatus(element.id!, status).subscribe({
+      next: (value) => {
+        this.alertService.mensajeExito(value.mensaje);
+        this.limpiarCampos();
+        this.obtenerListaTareas();
+      },
+    });
+  }
+  terminarLaTarea(element: Tarea) {
+    const status = 'TERMINADA';
+    this.service.cambiarStatus(element.id!, status).subscribe({
+      next: (value) => {
+        this.alertService.mensajeExito(value.mensaje);
+        this.limpiarCampos();
+        this.obtenerListaTareas();
+      },
+    });
   }
 
 }
