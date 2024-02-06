@@ -4,7 +4,7 @@
   </div>
 </nav>
 
-<h2 class="mt-5" style="text-align: center">Crear Tarea</h2>
+<h2 class="mt-3" style="text-align: center">Crear Tarea</h2>
 
 <div class="container">
   <div class="mb-3">
@@ -43,9 +43,9 @@
           mat-raised-button
           color="primary"
           [disabled]="!form.valid"
-          (click)="crearTarea()"
+          (click)="crearActualizarTarea()"
         >
-          Crear
+          {{actualizar ? 'Actualizar' : 'Crear'}}
         </button>
       </div>
     </section>
@@ -104,11 +104,14 @@
             <mat-icon>menu</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="actualizarTarea(element)">
+            <button mat-menu-item (click)="previoActualizarTarea(element)">
               Actualizar
             </button>
             <button mat-menu-item (click)="eliminarTarea(element)">
               Eliminar
+            </button>
+            <button mat-menu-item (click)="ponerEnCurso(element)">
+              Poner En Pendiente
             </button>
           </mat-menu>
         </td>

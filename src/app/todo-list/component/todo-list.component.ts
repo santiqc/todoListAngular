@@ -25,8 +25,8 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['id', 'name', 'description', 'created', 'lastModifiedDate', 'priority', 'action'];
   dataSource: any;
-
-
+  actualizar: boolean = false;
+  tarea!: Tarea | null;
   constructor(private service: TodoListService,
     private alertService: AlertService,
     private fb: FormBuilder) {
@@ -62,6 +62,15 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     )
   }
 
+  crearActualizarTarea(): void {
+    if (this.actualizar) {
+      this.actualizarTarea(this.tarea!)
+      return;
+    }
+
+    this.crearTarea();
+  }
+
   crearTarea() {
     const formValues = this.form.getRawValue();
     console.log(this.form);
@@ -83,6 +92,8 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   limpiarCampos(): void {
+    this.actualizar = false;
+    this.tarea = null;
     this.form.reset();
   }
 
@@ -99,13 +110,36 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  previoActualizarTarea(element: Tarea): void {
+    this.actualizar = true;
+    this.tarea = element;
+    this.form.get('nombre')?.setValue(element.nameTark);
+    this.form.get('descripcion')?.setValue(element.description);
+    this.form.get('prioridad')?.setValue(element.priority);
+  }
+
   actualizarTarea(element: Tarea): void {
     // Lógica para actualizar la tarea
-    console.log('Actualizar tarea:', element);
+    const formValues = this.form.getRawValue();
+    const data: Tarea = {
+      id: element.id,
+      nameTark: formValues.nombre,
+      description: formValues.descripcion,
+      priority: formValues.prioridad
+    };
+
+    this.service.actualizarTarea(data).subscribe({
+      next: (value) => {
+        this.alertService.mensajeExito(value.mensaje);
+        console.log(value);
+        this.limpiarCampos();
+        this.obtenerListaTareas();
+      },
+    });
   }
 
   eliminarTarea(element: any): void {
-    this.alertService.mensajeConfirmacion('Desea eliminar la tarea?')
+    this.alertService.mensajeConfirmacion('Estas seguro de eliminar la tarea?')
       .then((result) => {
         if (result.isConfirmed) {
           this.service.eliminarTarea(element.id).subscribe(
@@ -121,6 +155,10 @@ export class TodoListComponent implements OnInit, AfterViewInit {
         }
       });
 
+
+  }
+
+  ponerEnCurso(element: Tarea) {
 
   }
 
