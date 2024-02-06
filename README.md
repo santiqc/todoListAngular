@@ -1,27 +1,8 @@
 # TodoListWeb
+![image](https://github.com/santiqc/todoListAngular/assets/86493587/39e63bf9-1efa-4fa6-a6f0-19885c9c5148)
+![image](https://github.com/santiqc/todoListAngular/assets/86493587/2044e761-e995-44d9-b7b6-1ca74720debe)
+![image](https://github.com/santiqc/todoListAngular/assets/86493587/fd2bd76e-5a2c-4b1c-92c5-62d6547e17ee)
+![image](https://github.com/santiqc/todoListAngular/assets/86493587/d245f113-491d-4d78-9e20-0d48bbdb2885)
+![image](https://github.com/santiqc/todoListAngular/assets/86493587/d6ff0f99-f99b-471b-ab11-4943f9143e0a)
+![image](https://github.com/santiqc/todoListAngular/assets/86493587/56fb4e02-405b-46ac-857a-4b3353ee6b5b)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.5.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
