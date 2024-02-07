@@ -191,5 +191,15 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       },
     });
   }
+  listarTarea(element: Tarea) {
+    const status = 'CREADA';
+    this.service.cambiarStatus(element.id!, status).subscribe({
+      next: (value) => {
+        this.alertService.mensajeExito(value.mensaje);
+        this.limpiarCampos();
+        this.obtenerListaTareas();
+      },
+    });
+  }
 
 }

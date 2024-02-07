@@ -201,9 +201,9 @@
 
 <div class="mt-5" style="display: flex; justify-content: space-around">
   <div class="container-fluid">
-    <h3 class="navbar-brand mb-0 h1" style="text-align: center"
-      >Tareas Terminadas</h3
-    >
+    <h3 class="navbar-brand mb-0 h1" style="text-align: center">
+      Tareas Terminadas
+    </h3>
     <table mat-table [dataSource]="dataSourceTerminas">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>No.</th>
@@ -253,6 +253,9 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="eliminarTarea(element)">
               Eliminar
+            </button>
+            <button mat-menu-item (click)="listarTarea(element)">
+              Listar Tarea
             </button>
           </mat-menu>
         </td>
